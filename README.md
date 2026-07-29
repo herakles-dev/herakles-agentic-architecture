@@ -12,13 +12,13 @@ This is not a bot. I pick the issues, write the code, review every diff, and app
 
 ```
 validate (8 gates) -> comprehend -> comply (8 detections) -> scaffold
--> [I write the code] -> pre-submit (12 checks) -> verify (6-8 agents)
+-> [I write the code] -> pre-submit (15 checks) -> verify (6-8 agents)
 -> approve (I read the full diff in my email) -> submit -> monitor
 ```
 
 **Before I started:** 8 automated checks confirmed the issue is open, unassigned, unclaimed, has no competing PRs, no blocking labels, and the contributing guide was read and parsed.
 
-**Before anything touched GitHub:** 12 static checks scanned for secrets, verified commit trailers, enforced DCO sign-off, checked AI disclosure compliance, and validated the methodology documentation.
+**Before anything touched GitHub:** 15 static checks scanned for secrets, verified commit trailers, enforced DCO sign-off, checked AI disclosure compliance, and validated the methodology documentation.
 
 **Before I approved:** 6-8 specialist agents independently reviewed the code:
 

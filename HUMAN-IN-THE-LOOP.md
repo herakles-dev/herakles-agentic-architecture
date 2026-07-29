@@ -20,7 +20,7 @@ I choose the approach here. I document what alternatives I considered and why I 
 
 ### Stop 2: After The Agents Review
 
-The code is written. 12 static checks passed. 6-8 agents reviewed the code and produced their verdicts. Now the pipeline stops again.
+The code is written. 15 static checks passed. 6-8 agents reviewed the code and produced their verdicts. Now the pipeline stops again.
 
 This is where I evaluate the agent findings. Are they right? Agents are useful but not infallible, and even when they're right, the quality varies a lot between them. Reviving Inspector PR #1134, all six verify agents passed the fix — but reading through the findings, it was clear the integration reviewer had done the real work. It traced `callTool`'s return value two hops out and caught a genuine regression the other five missed: an app-resource tool run as a task opened its embedded view against a placeholder instead of the final result. I confirmed the trace against the actual code, wrote a regression test that failed on the pre-fix version to prove it, and only then trusted the PASS.
 

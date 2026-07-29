@@ -81,7 +81,9 @@ A race where the message handler could touch a closed resource. A contributor po
 | **v1** (Mar 7) | 8 pre-flight + 10 pre-submit checks | Starting point. Static analysis only. |
 | **v2** (Mar 13) | 12 pre-submit + 5-7 verification agents + email approval | V1's static checks missed real issues on the Kubeflow PR. Added agents that actually reason about code. Added email gate because agents aren't perfect either. |
 | **v2.1** (Mar 14) | Voice reviewer agent (Agent 6) | PR #1144's first draft scored 5/10 on authenticity. Added an agent that specifically checks if the PR description reads like a human wrote it. |
+| **v2.2** (Jul 18) | Tree hygiene, commit voice, and scope checks (12 → 15 pre-submit) | Reviving PR #1134 I found a stray script and a lockfile I hadn't meant to touch sitting in my own tree. Added checks for the things I kept catching by eye. |
+| **v2.3** (Jul 29) | Pipeline check blocks instead of warning; verify verdicts pin to a commit; `track.sh` reconciles against live GitHub | An audit of my own repo found every recent issue had skipped the pipeline entirely — the one check positioned to catch that only ever printed a warning. It also found a finished fix I'd never submitted and three PRs missing from my notes, because PR state lived in prose instead of being derived. |
 
 ---
 
-*Updated: 2026-07-18*
+*Updated: 2026-07-29*

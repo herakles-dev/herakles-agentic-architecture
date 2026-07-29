@@ -50,7 +50,7 @@ This matrix drives the pre-submit checks. Miss a trailer? The gate catches it. I
 
 ## Don't Ship Garbage
 
-After I've written the code, 12 static checks run before anything else sees it.
+After I've written the code, 15 static checks run before anything else sees it.
 
 **Things that will stop me cold:**
 - A secret in my diff (AWS keys, API tokens, private keys, hardcoded passwords)

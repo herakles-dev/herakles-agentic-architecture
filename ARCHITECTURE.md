@@ -80,7 +80,7 @@ The rules I hold myself to:
 
 ## Phase 6: Pre-Submit
 
-12 automated checks before anything goes near the verification agents:
+15 automated checks before anything goes near the verification agents:
 
 **The blockers** (if any of these fail, full stop):
 - No forbidden patterns in commits (AI mentions when the project forbids them)
@@ -89,6 +89,9 @@ The rules I hold myself to:
 - No secrets in the diff (AWS keys, API tokens, private keys, passwords — the regex patterns catch the common ones)
 - No sensitive files (.env, .key, .pem, credentials.*)
 - AI disclosure policy compliance
+- Comprehension and compliance data exist for the target repo
+- Pipeline state is consistent — the issue went through the pipeline, and the
+  verify verdict is pinned to the commit being submitted
 
 **The warnings** (proceed with caution):
 - Test evidence is documented, not just template placeholders
@@ -96,13 +99,15 @@ The rules I hold myself to:
 - Session record exists
 - Alternatives are documented
 - PR checklist is complete
-- Pipeline state is consistent
+- Tree hygiene — no stray scripts, build artifacts, or unexplained lockfile churn
+- Commit message voice — a heuristic pre-filter for AI tells
+- Scope report — one deliverable per PR
 
 I built this gate because it's fast (~2 seconds) and catches the stuff that's embarrassing to miss. The agent review in Phase 7 is slower and more thorough, but there's no point running 6 agents if I left an AWS key in my diff.
 
 ## Phase 7: Verify
 
-This is the heart of the v2.1 pipeline. After 12 static checks pass, the system assembles a briefing document — issue spec, compliance rules, session record, full diff, complete contents of every changed file, and comprehension context — and spawns 6-8 specialist agents to review the code simultaneously.
+This is the heart of the pipeline. After 15 static checks pass, the system assembles a briefing document — issue spec, compliance rules, session record, full diff, complete contents of every changed file, and comprehension context — and spawns 6-8 specialist agents to review the code simultaneously.
 
 ### The Agents
 
@@ -168,7 +173,7 @@ Interrupt the session, come back a week later, run `--resume` — it picks up ex
 
 ## Infrastructure
 
-12 bash scripts, each doing one thing:
+13 bash scripts, each doing one thing:
 
 | Script | Job |
 |--------|-----|
@@ -176,11 +181,12 @@ Interrupt the session, come back a week later, run `--resume` — it picks up ex
 | `validate.sh` | 8-gate pre-flight. Is this issue worth pursuing? |
 | `comprehend.sh` | 4-tier comprehension. How deeply do I need to understand this repo? |
 | `compliance.sh` | 8-detection compliance matrix. What are this project's rules? |
-| `solve.sh` | Session scaffolding. Create the issue directory and artifacts. |
-| `pre-submit.sh` | 12-check static gate. Did I make any obvious mistakes? |
+| `solve.sh` | Session scaffolding. Superseded by `orchestrate.sh`, which enforces the gates it skips. |
+| `pre-submit.sh` | 15-check static gate. Did I make any obvious mistakes? |
 | `notify.sh` | IONOS SMTP email. The approval gate + notifications. |
+| `track.sh` | Reconciles local artifacts against live PR state, in both directions. |
+| `index-issues.sh` | Resolves every issue directory to a repo and PR. Feeds `track.sh`. |
 | `hunt.sh` | Issue discovery across target orgs. |
 | `score.sh` | Weighted scoring. Which issues are worth the most? |
 | `analyze-repo.sh` | Deep repo analysis. |
-| `track.sh` | Contribution stats. |
 | `gsoc.sh` | Google Summer of Code module. |
